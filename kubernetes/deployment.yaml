@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolitico-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monolitico-app
+  template:
+    metadata:
+      labels:
+        app: monolitico-app
+    spec:
+      containers:
+        - name: monolitico-container
+          image: usp-monolitico:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              value: jdbc:postgresql://postgres-monolitico:5432/db-monolitico
+            - name: DATABASE_USER
+              value: postgres-monolitico
+            - name: DATABASE_PASSWORD
+              value: masterkey
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "768Mi"
